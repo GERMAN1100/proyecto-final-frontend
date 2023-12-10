@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 import styled from 'styled-components';
 
 const ResumeWrapper = styled.div`
@@ -10,11 +9,22 @@ const ResumeWrapper = styled.div`
   margin: auto;
   text-align: center;
 `;
+
 const Resume = ({ formData, quote }) => {
+  // Verificar si formData está definido
+  if (!formData) {
+    return null;
+  }
+
   const { category, type, squareMeters } = formData;
 
+  // Verificar si category, type y squareMeters están definidos y no son nulos
+  if (!category || !type || squareMeters == null) {
+    return null;
+  }
+
   useEffect(() => {
-  
+    // Verificar si category y type son cadenas no vacías
     if (category.trim() !== '' && type.trim() !== '') {
       const cotizacion = {
         fechaCotizacion: new Date().toLocaleString(),
@@ -22,12 +32,14 @@ const Resume = ({ formData, quote }) => {
         ubicacion: type,
         metrosCuadrados: squareMeters,
         poliza: quote,
+       
       };
+      console.log('Cotización a guardar:', cotizacion);
 
-     
+
       const historialCotizaciones = JSON.parse(localStorage.getItem('historialCotizaciones')) || [];
+      console.log('Historial Cotizaciones antes:', historialCotizaciones);
 
-      
       const isDuplicate = historialCotizaciones.some(
         (item) =>
           item.fechaCotizacion === cotizacion.fechaCotizacion &&
@@ -38,7 +50,6 @@ const Resume = ({ formData, quote }) => {
       );
 
       if (!isDuplicate) {
-        
         historialCotizaciones.push(cotizacion);
 
         // Guardar el historial actualizado en localStorage
@@ -46,8 +57,6 @@ const Resume = ({ formData, quote }) => {
       }
     }
   }, [category, type, squareMeters, quote]);
-
-  if (category.trim() === '' || type.trim() === '') return null;
 
   return (
     <ResumeWrapper>

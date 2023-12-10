@@ -39,6 +39,10 @@ const Historial = () => {
     setHistorialCotizaciones(storedHistorial);
   }, []);
 
+
+
+
+
   const retornoTablaHTML = (fila) => {
     return (
       <tr key={fila.fechaCotizacion}>
@@ -47,6 +51,8 @@ const Historial = () => {
         <HistorialTd>{fila.ubicacion}</HistorialTd>
         <HistorialTd>{fila.metrosCuadrados}</HistorialTd>
         <HistorialTd>$ {fila.poliza.toLocaleString()}</HistorialTd>
+       
+        
       </tr>
     );
   };
@@ -62,6 +68,8 @@ const Historial = () => {
             <HistorialTh>Ubicación</HistorialTh>
             <HistorialTh>Metros Cuadrados</HistorialTh>
             <HistorialTh>Poliza</HistorialTh>
+            
+            
           </tr>
         </thead>
         <tbody>{historialCotizaciones.map(retornoTablaHTML)}</tbody>
