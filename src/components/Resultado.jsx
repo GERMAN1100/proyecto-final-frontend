@@ -43,9 +43,9 @@ const Result = ({ budgetAmount }) => {
       <AmountWrap>
         Monto de la Cotización: ${budgetAmount}
       </AmountWrap>
-      <ResetButton>
+      {/* <ResetButton>
         Resetear costos
-      </ResetButton>
+      </ResetButton> */}
      
     </div>
   );
@@ -54,4 +54,3 @@ const Result = ({ budgetAmount }) => {
 export default Result;
 
 
-// ya hecho con chatgpt

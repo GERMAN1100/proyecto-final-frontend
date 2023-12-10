@@ -1,11 +1,20 @@
 import React, { useEffect } from 'react';
 
+import styled from 'styled-components';
 
+const ResumeWrapper = styled.div`
+  background-color: #f2f2f2;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: auto;
+  text-align: center;
+`;
 const Resume = ({ formData, quote }) => {
   const { category, type, squareMeters } = formData;
 
   useEffect(() => {
-    // Guardar la cotización en localStorage al montar el componente
+  
     if (category.trim() !== '' && type.trim() !== '') {
       const cotizacion = {
         fechaCotizacion: new Date().toLocaleString(),
@@ -15,10 +24,10 @@ const Resume = ({ formData, quote }) => {
         poliza: quote,
       };
 
-      // Obtener el historial de cotizaciones desde localStorage
+     
       const historialCotizaciones = JSON.parse(localStorage.getItem('historialCotizaciones')) || [];
 
-      // Verificar duplicados antes de agregar la nueva cotización
+      
       const isDuplicate = historialCotizaciones.some(
         (item) =>
           item.fechaCotizacion === cotizacion.fechaCotizacion &&
@@ -29,7 +38,7 @@ const Resume = ({ formData, quote }) => {
       );
 
       if (!isDuplicate) {
-        // Agregar la nueva cotización al historial
+        
         historialCotizaciones.push(cotizacion);
 
         // Guardar el historial actualizado en localStorage
@@ -41,13 +50,13 @@ const Resume = ({ formData, quote }) => {
   if (category.trim() === '' || type.trim() === '') return null;
 
   return (
-    <div>
+    <ResumeWrapper>
       <h2>Resumen cotización:</h2>
       <p>Categoría: {category}</p>
       <p>Tipo: {type}</p>
       <p>Metros Cuadrados: {squareMeters}</p>
       <p>Cotización: ${quote}</p>
-    </div>
+    </ResumeWrapper>
   );
 };
 
