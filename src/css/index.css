@@ -1,0 +1,74 @@
+/* Reset de estilos y configuración global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin-top: 100px;
+  background: #e96443;
+  background: -webkit-linear-gradient(to right, #904e95, #e96443);
+  background: linear-gradient(to right, #904e95, #e96443);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+/* Estilos específicos para tus elementos */
+ul {
+  list-style: none;
+  padding: none;
+  margin: none;
+}
+button{
+  font-size: 20px;
+  width: 70px;
+  height: 50px;
+}
+input{
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+ }
+select{
+  font-size: 25px;
+  height: 40px;
+}
+option{
+  font-size: 30px;
+}
+
+span.resultado {
+  position: relative;
+  width: 100%;
+}
+
+.resultado-enter {
+  transition: .5s;
+}
+
+.resultado-enter.resultado-enter-active{
+  transform: translateY(0%);
+}
+
+.resultado-exit {
+  transform: translateY(0);
+  transition: .5s;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.resultado-exit-active {
+  opacity: 0;
+  transform: translateY(-10%);
+}
