@@ -19,6 +19,8 @@ const App = () => {
 
       {/* Encabezado */}
       <Header title="COTIZADOR DE SEGUROS" />
+
+      <Header title="Bienvenidos a su Seguro de confianza" />
      
       
       {/* Formulario */}

@@ -1,53 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-
-
+const ResultContainer = styled.div`
+  margin : 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+`;
 
 const AmountWrap = styled.div`
   width: 200px;
   color: #ffffff;
   background-color: #34bfb2;
-  
+  align-items: center;
+  justify-content: center;
   text-align: center;
   box-sizing: border-box;
-  display: inline-block;
-`;
-
-const ResetButton = styled.button`
- 
-  background-color: #00838f;
+  margin-top: 20px;
   height:100px;
-  width:200px;
-  text-align: center;
-  color: #ffffff;
-  text-transform: uppercase;
-  font-weight: bold;
-  border: none;
-  transition: background-color .3s ease;
-  box-sizing: border-box;
-  display: inline-block;
-  &:hover {
-    background-color: #26c6da;
-    cursor: pointer;
-  }
-  &:focus {
-    outline: none;
-  }
+ 
 `;
 
 const Result = ({ budgetAmount }) => {
   return (
-    <div>
-     
-      <AmountWrap>
-        Monto de la Cotización: ${budgetAmount}
-      </AmountWrap>
-      {/* <ResetButton>
-        Resetear costos
-      </ResetButton> */}
-     
-    </div>
+    <ResultContainer>
+      <AmountWrap>Monto de la Cotización: ${budgetAmount}</AmountWrap>
+    </ResultContainer>
   );
 };
 

@@ -1,6 +1,37 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import getFinalBudget from '../Helper';
 import datos from '../datos.json';
+
+const FormWrapper = styled.div`
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const PlanContainer = styled.div`
+  background-color: #34bfb2;
+  color: #fff;
+  margin-bottom: 20px;
+  padding: 20px;
+  width: 100%; 
+`;
+
+const ResetButton = styled.button`
+  background-color: #00838f;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #26c6da;
+  }
+`;
 
 const Form = ({ setBudgetObj }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +43,37 @@ const Form = ({ setBudgetObj }) => {
 
   const [error, setError] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const insurancePlans = {
+    basic: {
+      name: 'Plan Básico',
+      coverage: [
+        'Cobertura Estándar:',
+        'Daños Estructurales: Cubre daños a la estructura de la propiedad debido a eventos como incendios, explosiones, inundaciones, etc.',
+        'Responsabilidad Civil: Protege contra reclamaciones de terceros por daños causados por la propiedad.',
+        'Asistencia 24/7:',
+        'Servicio de Emergencia: Asistencia telefónica para emergencias relacionadas con la propiedad.',
+        'Beneficios Adicionales:',
+        'Cobertura contra Incendios: Protección específica contra incendios.',
+      ],
+      costMultiplier: 1.2,
+    },
+    complete: {
+      name: 'Plan Completo',
+      coverage: [
+        'Cobertura Ampliada:',
+        'Daños Estructurales: Incluye cobertura para daños estructurales y colaterales más amplios.',
+        'Cobertura contra Robos: Protección contra robos y vandalismo.',
+        'Daños por Fenómenos Naturales: Incluye eventos como terremotos, tormentas, y otros desastres naturales.',
+        'Responsabilidad Extendida:',
+        'Responsabilidad Civil Ampliada: Mayor cobertura para reclamaciones de terceros.',
+        'Asistencia 24/7 con Servicios Adicionales:',
+        'Servicio de Reparaciones Rápidas: Coordinación de servicios de reparación con profesionales acreditados.',
+        'Asesoría Legal: Consultas legales relacionadas con la propiedad.',
+      ],
+      costMultiplier: 1.5,
+    },
+  };
 
   const { propertyType, location, squareMeters, plan } = formData;
 
@@ -37,35 +99,6 @@ const Form = ({ setBudgetObj }) => {
       (item) => item.tipo === propertyType && (item.categoria === 'ubicacion' || item.tipo === location)
     );
     const factor = selectedProperty ? selectedProperty.factor : 1.0;
-
-    const insurancePlans = {
-      basic: {
-        name: 'Plan Básico',
-        coverage: [`Cobertura Estándar:
-        Daños Estructurales: Cubre daños a la estructura de la propiedad debido a eventos como incendios, explosiones, inundaciones, etc.
-        Responsabilidad Civil: Protege contra reclamaciones de terceros por daños causados por la propiedad.
-      Asistencia 24/7:
-        Servicio de Emergencia: Asistencia telefónica para emergencias relacionadas con la propiedad.
-      Beneficios Adicionales:
-        Cobertura contra Incendios: Protección específica contra incendios.`],
-
-        costMultiplier: 1.2,
-      },
-      complete: {
-        name: 'Plan Completo',
-        coverage: [`Cobertura Ampliada: 
-        Daños Estructurales: Incluye cobertura para daños estructurales y colaterales más amplios.
-        Cobertura contra Robos: Protección contra robos y vandalismo.
-        Daños por Fenómenos Naturales: Incluye eventos como terremotos, tormentas, y otros desastres naturales.
-      Responsabilidad Extendida:
-        Responsabilidad Civil Ampliada: Mayor cobertura para reclamaciones de terceros.
-      Asistencia 24/7 con Servicios Adicionales:
-        Servicio de Reparaciones Rápidas: Coordinación de servicios de reparación con profesionales acreditados.
-        Asesoría Legal: Consultas legales relacionadas con la propiedad`],
-
-        costMultiplier: 1.5,
-      },
-    };
 
     const currentSelectedPlan = insurancePlans[plan] || insurancePlans.basic;
 
@@ -98,10 +131,11 @@ const Form = ({ setBudgetObj }) => {
         propiedad: propertyType,
         ubicacion: location,
         metrosCuadrados: parseFloat(squareMeters),
-        poliza:{   name: currentSelectedPlan.name,
+        poliza: {
+          name: currentSelectedPlan.name,
           cost: totalCost,
           coverage: currentSelectedPlan.coverage,
-        }
+        },
       });
 
       localStorage.setItem('historialCotizaciones', JSON.stringify(historialCotizaciones));
@@ -124,8 +158,20 @@ const Form = ({ setBudgetObj }) => {
     .filter((item) => item.categoria === 'ubicacion')
     .map((item) => item.tipo);
 
+  const resetForm = () => {
+    setFormData({
+      propertyType: '',
+      location: '',
+      squareMeters: '',
+      plan: 'basic',
+    });
+    setSelectedPlan(null);
+    setBudgetObj(null);
+    window.location.reload();
+  };
+
   return (
-    <div>
+    <FormWrapper>
       <form onSubmit={submitForm}>
         <div>
           <label>Tipo de Propiedad:</label>
@@ -158,10 +204,53 @@ const Form = ({ setBudgetObj }) => {
 
         <div>
           <label>Plan de Seguro:</label>
-          <select name="plan" value={plan} onChange={fieldHandle}>
-            <option value="basic">Plan Básico</option>
-            <option value="complete">Plan Completo</option>
-          </select>
+          <PlanContainer>
+            <label>
+              <input
+                type="radio"
+                name="plan"
+                value="basic"
+                checked={plan === 'basic'}
+                onChange={fieldHandle}
+              />
+              <strong>Plan Básico</strong>
+            </label>
+            <div>
+              <strong>Tipo:</strong> {insurancePlans.basic.name}
+            </div>
+            <div>
+              <strong>Cobertura:</strong>
+              <ul>
+                {insurancePlans.basic.coverage.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </PlanContainer>
+
+          <PlanContainer>
+            <label>
+              <input
+                type="radio"
+                name="plan"
+                value="complete"
+                checked={plan === 'complete'}
+                onChange={fieldHandle}
+              />
+              <strong>Plan Completo</strong>
+            </label>
+            <div>
+              <strong>Tipo:</strong> {insurancePlans.complete.name}
+            </div>
+            <div>
+              <strong>Cobertura:</strong>
+              <ul>
+                {insurancePlans.complete.coverage.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </PlanContainer>
         </div>
 
         <button type="submit">Cotizar</button>
@@ -169,20 +258,8 @@ const Form = ({ setBudgetObj }) => {
         {error ? <div>Error: Completar los campos del formulario.</div> : null}
       </form>
 
-      <div style={{ marginTop: '20px' }}>
-        <h3>Detalles del Plan Seleccionado:</h3>
-        {selectedPlan && (
-          <>
-            <p>
-              <strong>Tipo:</strong> {selectedPlan.name}
-            </p>
-            <p>
-              <strong>Cobertura:</strong> {selectedPlan.coverage}
-            </p>
-          </>
-        )}
-      </div>
-    </div>
+      <ResetButton onClick={resetForm}>Reset</ResetButton>
+    </FormWrapper>
   );
 };
 
