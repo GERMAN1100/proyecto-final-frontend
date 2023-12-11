@@ -42,17 +42,17 @@ const Historial = () => {
 
 
 
-
   const retornoTablaHTML = (fila) => {
     return (
       <tr key={fila.fechaCotizacion}>
-        <HistorialTd>{fila.fechaCotizacion}</HistorialTd>
+        <HistorialTd>
+          {fila.fechaCotizacion ? new Date(fila.fechaCotizacion).toLocaleString() : ''}
+        </HistorialTd>
         <HistorialTd>{fila.propiedad}</HistorialTd>
         <HistorialTd>{fila.ubicacion}</HistorialTd>
         <HistorialTd>{fila.metrosCuadrados}</HistorialTd>
-        <HistorialTd>$ {fila.poliza.toLocaleString()}</HistorialTd>
-       
-        
+        <HistorialTd>{fila.poliza ? fila.poliza.name : ''}</HistorialTd>
+        <HistorialTd>${fila.poliza && fila.poliza.cost ? fila.poliza.cost.toLocaleString() : ''}</HistorialTd>
       </tr>
     );
   };
@@ -68,7 +68,7 @@ const Historial = () => {
             <HistorialTh>Ubicación</HistorialTh>
             <HistorialTh>Metros Cuadrados</HistorialTh>
             <HistorialTh>Poliza</HistorialTh>
-            
+            <HistorialTh>Cotización</HistorialTh>
             
           </tr>
         </thead>

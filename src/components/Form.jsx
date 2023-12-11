@@ -98,7 +98,10 @@ const Form = ({ setBudgetObj }) => {
         propiedad: propertyType,
         ubicacion: location,
         metrosCuadrados: parseFloat(squareMeters),
-        poliza: currentSelectedPlan.name,
+        poliza:{   name: currentSelectedPlan.name,
+          cost: totalCost,
+          coverage: currentSelectedPlan.coverage,
+        }
       });
 
       localStorage.setItem('historialCotizaciones', JSON.stringify(historialCotizaciones));
